@@ -1,13 +1,15 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { Pressable, StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import React, { Fragment, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamasList } from '../utils/RootStackParam';
 import { IJugador } from '../models/IJugador';
 import firestore from '@react-native-firebase/firestore';
 import { FlatList } from 'react-native-gesture-handler';
+import ItemJugador from './items/ItemJugador';
+import Navegacion from '../utils/Navegacion';
 
-type Props = StackScreenProps<RootStackParamasList, 'Agregar'>;
+type Props = StackScreenProps<RootStackParamasList>;
 
 const Principal = ({ navigation }: Props) => {
     const [Jugadores, setJugadores] = useState<IJugador[]>([]);
@@ -33,15 +35,32 @@ const Principal = ({ navigation }: Props) => {
 
     return (
         <View style={styles.container}>
-            <FlatList data={Jugadores} renderItem={(e) => 
-                <Pressable onPress={() => navigation.navigate("Actualizar", {id: e.item.Id})}>
+            <FlatList data={Jugadores} renderItem={(e) =>
+                    <View style={stylesItem.contenedor}>
+                    <View style={stylesItem.contenImagen}>
+                      <Image style={stylesItem.imagen} source={{ uri: e.item.Imagen }}></Image>
+                    </View>
+                    <View style={stylesItem.contenTexto}>
+                      <Text style={stylesItem.texto}>{"Nombre: " + e.item.Nombre}</Text>
+                      <Text style={stylesItem.texto}>{"Edad: " + e.item.Edad}</Text>
+                      <Text style={stylesItem.texto}>{"Pais: " + e.item.Pais}</Text>
+                      <Pressable style={stylesItem.botonEditar} onPress={() => navigation.navigate("Actualizar", { id: e.item.Id })}>
+                        <Icon style={{marginRight: 5}} name="pencil" size={20} color={'white'}></Icon>
+                        <Text style={stylesItem.textoBoton}>Editar</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+
+                    
+/*                 <Pressable onPress={() => navigation.navigate("Actualizar", { id: e.item.Id })}>
                     <View style={styles.jugadorItem}>
                         <Icon name='user' size={25} color="#D83F1E"></Icon>
                         <Text style={styles.textoJugador}>{e.item.Nombre}</Text>
                         <Icon name='chevron-right' size={20} color="#D83F1E"></Icon>
                     </View>
-                </Pressable>
+                </Pressable> */
             }></FlatList>
+
             <Pressable
                 style={styles.botonAgregra}
                 onPress={() => navigation.navigate('Agregar')}>
@@ -57,7 +76,7 @@ export default Principal;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1
     },
     botonAgregra: {
         position: 'absolute',
@@ -74,7 +93,7 @@ const styles = StyleSheet.create({
     iconoFB: {
         alignSelf: 'center',
     },
-    jugadorItem:{
+    jugadorItem: {
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: "white",
@@ -87,7 +106,7 @@ const styles = StyleSheet.create({
         elevation: 4,
         justifyContent: "space-between"
     },
-    textoJugador:{
+    textoJugador: {
         color: "black",
         fontSize: 15,
         fontWeight: "bold",
@@ -95,3 +114,46 @@ const styles = StyleSheet.create({
         marginLeft: 8
     }
 });
+
+const stylesItem = StyleSheet.create({
+    contenedor: {
+      flexDirection: "row",
+      backgroundColor: "orange",
+      width: "95%",
+      height: 200,
+      margin: 2,
+      borderRadius: 15,
+      alignSelf: "center"
+    },
+    contenImagen: {
+      padding: 20,
+      alignSelf: "center"
+    },
+    contenTexto:{
+      justifyContent: "center"
+    },
+    imagen: {
+      width: 170,
+      height: 180,
+      borderRadius: 10
+    },
+    texto: {
+      fontSize: 20,
+      color: "black",
+      marginVertical: 5
+    },
+    botonEditar:{
+      backgroundColor: "green",
+      width: 100,
+      height: 30,
+      borderRadius: 10,
+      justifyContent: "center",
+      alignItems: "center",
+      alignSelf: "center",
+      marginTop: 10,
+      flexDirection: "row"
+    },
+    textoBoton:{
+      color: "white"
+    }
+  })

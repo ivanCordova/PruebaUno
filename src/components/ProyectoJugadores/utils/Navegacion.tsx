@@ -8,6 +8,7 @@ import Actualizar from '../screens/Actualizar';
 import Foto from '../screens/Foto';
 import Login from '../screens/Login';
 import auth from '@react-native-firebase/auth';
+import Registro from '../screens/Registro';
 
 const Navegacion = () => {
     const Stack = createStackNavigator();
@@ -26,6 +27,7 @@ const Navegacion = () => {
                 <Stack.Screen name='Actualizar' component={Actualizar}></Stack.Screen>
                 <Stack.Screen name='Foto' component={Foto}></Stack.Screen>
                 <Stack.Screen name='Login' component={Login}></Stack.Screen>
+                <Stack.Screen name='Registro' component={Registro}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
   )

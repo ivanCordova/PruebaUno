@@ -1,18 +1,17 @@
-import { Pressable, StyleSheet, Text, View, Alert } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View, Alert } from 'react-native';
 import React, { Fragment, useState } from 'react'
+import * as Yup from 'yup';
+import { IUsuario } from '../models/IJugador';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Formik } from 'formik';
+import auth from '@react-native-firebase/auth';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamasList } from '../utils/RootStackParam';
-type Props = StackScreenProps<RootStackParamasList, "Actualizar">;
-import auth from '@react-native-firebase/auth';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import { IUsuario } from '../models/IJugador';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+type Props = StackScreenProps<RootStackParamasList>;
 
 
-const Login = ({ navigation }: Props) => {
-
+const Registro = ({ navigation }: Props) => {
     const usuarioInicial: IUsuario = {
         Usuario: "",
         Contrasenia: ""
@@ -23,41 +22,30 @@ const Login = ({ navigation }: Props) => {
         Contrasenia: Yup.string().required("La contraseña es requerida")
     })
 
-    const registro = () => {
+    const registro = (usr: IUsuario) => {
         auth()
-            .createUserWithEmailAndPassword("", "") // 'talivan1602@gmail.com', '123456'
+            .createUserWithEmailAndPassword(usr.Usuario, usr.Contrasenia) // 'talivan1602@gmail.com', '123456'
             .then(() => {
-                console.log('User account created & signed in!');
+                Alert.alert("Correcto", "Usuario registrado correctamente")
+                navigation.goBack()
             })
             .catch(error => {
-                /*                 if (error.code === 'auth/email-already-in-use') {
-                                    console.log('That email address is already in use!');
-                                }
-                
-                                if (error.code === 'auth/invalid-email') {
-                                    console.log('That email address is invalid!');
-                                }
-                 */
-                console.error(error);
-            });
-    }
+                if (error.code === 'auth/email-already-in-use') {
+                    Alert.alert("Error", "El email ya esta en uso")
+                }
 
-    const login = (usr: IUsuario) => {
-        auth().signInWithEmailAndPassword(usr.Usuario, usr.Contrasenia)
-            .then((e) => {
-                console.log(e.user.uid)
-                navigation.navigate("Principal")
-            }).catch(error => {
-                Alert.alert("Error", error.code)
-            })
+                if (error.code === 'auth/invalid-email') {
+                    Alert.alert("Error", "El email no es valido")
+                }
+            });
     }
 
     return (
         <ScrollView>
-            <Formik initialValues={usuario} onSubmit={valores => login(valores)} validationSchema={validacion}>
+            <Formik initialValues={usuario} onSubmit={valores => registro(valores)} validationSchema={validacion}>
                 {({ values, handleChange, errors, setFieldTouched, handleSubmit }) => (
                     <Fragment>
-                        <Icon style={styles.icon} name="user" size={200} color="orange" />
+                        <Icon style={styles.icon} name="user-plus" size={200} color="orange" />
                         <TextInput
                             placeholder='Usuario'
                             style={styles.textInput}
@@ -74,19 +62,16 @@ const Login = ({ navigation }: Props) => {
                         ></TextInput>
                         {errors.Contrasenia && <Text style={styles.textoError}>{errors.Contrasenia}</Text>}
                         <Pressable style={styles.boton} onPress={handleSubmit}>
-                            <Text style={styles.textoBoton}>Iniciar sesión</Text>
+                            <Text style={styles.textoBoton}>Registrarse</Text>
                         </Pressable>
                     </Fragment>
                 )}
             </Formik>
-            <Pressable style={styles.boton} onPress={() => navigation.navigate("Registro")}>
-                <Text style={styles.textoBoton}>Registrarse</Text>
-            </Pressable>
         </ScrollView>
     )
 }
 
-export default Login
+export default Registro
 
 const styles = StyleSheet.create({
     textoBoton: {

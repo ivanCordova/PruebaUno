@@ -3,5 +3,6 @@ export type RootStackParamasList ={
     Principal: undefined,
     Actualizar: {id: string},
     Foto: undefined,
-    Login: undefined
+    Login: undefined,
+    Registro: undefined
 }
