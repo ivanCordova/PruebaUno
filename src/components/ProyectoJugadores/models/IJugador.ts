@@ -5,3 +5,8 @@ export interface IJugador {
   Edad: number;
   Imagen: string;
 }
+
+export interface IUsuario {
+  Usuario: string,
+  Contrasenia: string
+}
