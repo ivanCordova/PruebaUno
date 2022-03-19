@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View, Alert } from 'react-native';
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useContext, useState } from 'react'
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamasList } from '../utils/RootStackParam';
 type Props = StackScreenProps<RootStackParamasList, "Actualizar">;
@@ -9,6 +9,7 @@ import { IUsuario } from '../models/IJugador';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { contexto } from '../utils/AuthContext';
 
 
 const Login = ({ navigation }: Props) => {
@@ -22,6 +23,8 @@ const Login = ({ navigation }: Props) => {
         Usuario: Yup.string().required("El usuario es requerido"),
         Contrasenia: Yup.string().required("La contraseña es requerida")
     })
+
+    const context = useContext(contexto)
 
     const registro = () => {
         auth()
@@ -46,6 +49,7 @@ const Login = ({ navigation }: Props) => {
         auth().signInWithEmailAndPassword(usr.Usuario, usr.Contrasenia)
             .then((e) => {
                 console.log(e.user.uid)
+                context.IniciarSesion({Correo: usr.Usuario, UserId: e.user.uid})
                 navigation.navigate("Principal")
             }).catch(error => {
                 Alert.alert("Error", error.code)

@@ -14,7 +14,7 @@ const ItemJugador = (Props: IJugador) => {
         <Text style={styles.texto}>{"Nombre: " + Props.Nombre}</Text>
         <Text style={styles.texto}>{"Edad: " + Props.Edad}</Text>
         <Text style={styles.texto}>{"Pais: " + Props.Pais}</Text>
-        <Pressable style={styles.botonEditar} >
+        <Pressable onPress={Props.mostrar} style={styles.botonEditar} >
           <Icon style={{marginRight: 5}} name="pencil" size={20} color={'white'}></Icon>
           <Text style={styles.textoBoton}>Editar</Text>
         </Pressable>

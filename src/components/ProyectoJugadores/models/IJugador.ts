@@ -3,7 +3,8 @@ export interface IJugador {
   Nombre: string;
   Pais: string;
   Edad: number;
-  Imagen: string;
+  Imagen: string,
+  mostrar: () => void;
 }
 
 export interface IUsuario {

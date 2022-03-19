@@ -32,9 +32,9 @@ const Agregar = () => {
     }
   }
 
-  const SubirImagen = async (j: IJugador) =>{
-    const nombreArchivo = imagen.substring(imagen.lastIndexOf("/")+1)
-    const uploadUri = Platform.OS == "ios" ? imagen.replace("file://",""): imagen
+  const SubirImagen = async (j: IJugador) => {
+    const nombreArchivo = imagen.substring(imagen.lastIndexOf("/") + 1)
+    const uploadUri = Platform.OS == "ios" ? imagen.replace("file://", "") : imagen
     const referencia = storage().ref(nombreArchivo)
     const task = referencia.putFile(uploadUri);
 
@@ -43,19 +43,19 @@ const Agregar = () => {
        transferred out of ${taskSnapshot.totalBytes}`);
     });
 
-    task.then(async () =>{
+    task.then(async () => {
       const link = await storage().ref(nombreArchivo).getDownloadURL()
       //console.log("Link: "+link)
       firestore()
-      .collection("Jugadores")
-      .add({
-          Nombre : j.Nombre,
-          Edad : j.Edad,
+        .collection("Jugadores")
+        .add({
+          Nombre: j.Nombre,
+          Edad: j.Edad,
           Pais: j.Pais,
-          Imagen : link
-      }).then(()=>{
-          Alert.alert("Correcto","Jugador agregado correctamente")
-      })
+          Imagen: link
+        }).then(() => {
+          Alert.alert("Correcto", "Jugador agregado correctamente")
+        })
     })
 
   }
@@ -81,20 +81,19 @@ const Agregar = () => {
 
   return (
     <ScrollView>
-      <Text>Agregar jugador</Text>
       <Formik initialValues={jugador} onSubmit={async valores => SubirImagen(valores)} validationSchema={validaciones}>
         {({ values, handleChange, errors, setFieldTouched, handleSubmit }) => (
           <Fragment>
-            <Text>Nombre</Text>
+            <Text style={styles.texto}>Nombre</Text>
             <TextInput style={styles.textInput}
               onChangeText={handleChange("Nombre")}
               onBlur={() => setFieldTouched("Nombre")}
               placeholder="Nombre del jugador"
             ></TextInput>
             {errors.Nombre &&
-              <Text style={{ color: "red" }}>{errors.Nombre}</Text>}
+              <Text style={styles.textoError}>{errors.Nombre}</Text>}
 
-            <Text>Edad</Text>
+            <Text style={styles.texto}>Edad</Text>
             <TextInput style={styles.textInput}
               onChangeText={handleChange("Edad")}
               onBlur={() => setFieldTouched("Edad")}
@@ -102,16 +101,16 @@ const Agregar = () => {
               keyboardType='numeric'
             ></TextInput>
             {errors.Edad &&
-              <Text style={{ color: "red" }}>{errors.Edad}</Text>}
+              <Text style={styles.textoError}>{errors.Edad}</Text>}
 
-            <Text>País</Text>
+            <Text style={styles.texto}>País</Text>
             <TextInput style={styles.textInput}
               onChangeText={handleChange("Pais")}
               onBlur={() => setFieldTouched("Pais")}
               placeholder="Pais del jugador"
             ></TextInput>
             {errors.Pais &&
-              <Text style={{ color: "red" }}>{errors.Pais}</Text>}
+              <Text style={styles.textoError}>{errors.Pais}</Text>}
 
             <View style={{ flexDirection: "row" }}>
               <Pressable style={[styles.boton, { width: "48%" }]} onPress={SeleccionarImagenGaleria}>
@@ -122,8 +121,8 @@ const Agregar = () => {
               </Pressable>
             </View>
             <Image source={{ uri: imagen }} style={styles.imagen} />
-            <Pressable style={styles.boton} onPress={handleSubmit}>
-              <Text style={styles.textoBoton}>Subir a storage</Text>
+            <Pressable style={[styles.boton, { alignSelf: "center" }]} onPress={handleSubmit}>
+              <Text style={styles.textoBoton}>Agregar</Text>
             </Pressable>
 
           </Fragment>
@@ -194,5 +193,16 @@ const styles = StyleSheet.create({
     height: 300,
     alignSelf: "center",
     marginVertical: 5
-  }
+  },
+  texto: {
+    fontSize: 20
+  }, 
+  textoError: {
+    backgroundColor: "red",
+    color: "white",
+    marginHorizontal: 15,
+    padding: 10,
+    borderRadius: 15,
+    fontSize: 15
+  },
 })

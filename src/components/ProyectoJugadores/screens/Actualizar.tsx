@@ -1,5 +1,5 @@
 import { ActivityIndicator, Pressable, StyleSheet, Text, View, Alert, Image, Modal } from 'react-native';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamasList } from '../utils/RootStackParam';
@@ -7,6 +7,9 @@ import firestore from '@react-native-firebase/firestore';
 import { IJugador } from '../models/IJugador';
 import { ImageLibraryOptions, ImagePickerResponse, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 type Props = StackScreenProps<RootStackParamasList, "Actualizar">;
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import { contexto } from '../utils/AuthContext';
+
 
 
 const Actualizar = ({ navigation, route }: Props) => {
@@ -16,7 +19,21 @@ const Actualizar = ({ navigation, route }: Props) => {
     const [pais, setPais] = useState<string>("")
     const [loading, setloading] = useState(false)
     const [imagen, setImagen] = useState("https://static.vecteezy.com/system/resources/previews/005/232/501/non_2x/photography-flat-outline-showing-capturing-camera-vector.jpg")
+    const context = useContext(contexto)
 
+
+    function like(){
+        console.log(context.usuario.Correo)
+        firestore()
+        .collection("Jugadores")
+        .doc(id)
+        .collection("Like")
+        .add({
+          Documento: id
+        }).then(() => {
+          Alert.alert("Correcto", "Like")
+        })
+    }
 
     async function GetJugador() {
         setloading(true)
@@ -99,27 +116,30 @@ const Actualizar = ({ navigation, route }: Props) => {
     return (
         <View style={styles.contenedor}>
             <Image style={styles.imagen} source={{ uri: imagen }}></Image>
-                <View style={styles.botonesFoto}>
-                    <Pressable style={styles.botonFoto} onPress={SeleccionarImagenGaleria}>
-                        <Text style={styles.textoBoton}>Obtener foto de librería</Text>
+            <View style={styles.botonesFoto}>
+                <Pressable style={styles.botonFoto} onPress={SeleccionarImagenGaleria}>
+                    <Text style={styles.textoBoton}>Obtener foto de librería</Text>
+                </Pressable>
+                <Pressable style={styles.botonFoto} onPress={TomarFotografia}>
+                    <Text style={styles.textoBoton}>Abrir camara</Text>
+                </Pressable>
+            </View>
+            <TextInput onChangeText={(e) => setNombre(e)} value={nombre} style={styles.textInput}></TextInput>
+            <TextInput onChangeText={(e) => setEdad(parseInt(e))} value={edad.toString()} style={styles.textInput}></TextInput>
+            <TextInput onChangeText={(e) => setPais(e)} value={pais} style={styles.textInput}></TextInput>
+            {loading ? <ActivityIndicator size={60}></ActivityIndicator> :
+                <View style={styles.contenedorBotones}>
+                    <Pressable style={styles.boton} onPress={actualizar}>
+                        <Text style={styles.textoBoton}>Actualizar</Text>
                     </Pressable>
-                    <Pressable style={styles.botonFoto} onPress={TomarFotografia}>
-                        <Text style={styles.textoBoton}>Abrir camara</Text>
+                    <Pressable style={[styles.boton, { backgroundColor: "green" }]} onPress={eliminar}>
+                        <Text style={styles.textoBoton}>Eliminar</Text>
+                    </Pressable>
+                    <Pressable onPress={like}>
+                        <Icon style={{marginHorizontal: 10}} name="heart" size={50} color="orange" />
                     </Pressable>
                 </View>
-                <TextInput onChangeText={(e) => setNombre(e)} value={nombre} style={styles.textInput}></TextInput>
-                <TextInput onChangeText={(e) => setEdad(parseInt(e))} value={edad.toString()} style={styles.textInput}></TextInput>
-                <TextInput onChangeText={(e) => setPais(e)} value={pais} style={styles.textInput}></TextInput>
-                {loading ? <ActivityIndicator size={60}></ActivityIndicator> :
-                    <View style={styles.contenedorBotones}>
-                        <Pressable style={styles.boton} onPress={actualizar}>
-                            <Text style={styles.textoBoton}>Actualizar</Text>
-                        </Pressable>
-                        <Pressable style={[styles.boton, { backgroundColor: "green" }]} onPress={eliminar}>
-                            <Text style={styles.textoBoton}>Eliminar</Text>
-                        </Pressable>
-                    </View>
-                }
+            }
         </View>
     )
 }
