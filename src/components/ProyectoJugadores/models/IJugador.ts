@@ -4,7 +4,7 @@ export interface IJugador {
   Pais: string;
   Edad: number;
   Imagen: string,
-  mostrar: () => void;
+  mostrar?: () => void;
 }
 
 export interface IUsuario {

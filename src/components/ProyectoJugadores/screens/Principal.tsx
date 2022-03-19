@@ -21,6 +21,18 @@ const Principal = ({ navigation }: Props) => {
   const [open, setOpen] = React.useState(false);
 
 
+/*   function GetJugadores(){
+    const suscriber = firestore().collection("Jugadores")
+    .onSnapshot(snapshot => {
+      snapshot && snapshot.forEach(doc => {
+        const jugador = doc.data() as IJugador
+        jugador.Id = doc.id
+        setJugadores(Jugadores => [...Jugadores,jugador])
+      })
+    })
+    return () => suscriber()
+  } */
+
   function GetJugadores() {
     const subscriber = firestore()
       .collection('Jugadores')
@@ -73,13 +85,6 @@ const Principal = ({ navigation }: Props) => {
           }}
         />
       </SpeedDial>
-      {/*       <Pressable
-        style={styles.botonAgregra}
-        onPress={() => navigation.navigate('Agregar')}>
-        <View style={styles.iconoFB}>
-          <Icon name="plus" size={25} color={'white'}></Icon>
-        </View>
-      </Pressable> */}
     </View>
   );
 };

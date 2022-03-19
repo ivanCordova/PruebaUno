@@ -29,7 +29,9 @@ const Actualizar = ({ navigation, route }: Props) => {
         .doc(id)
         .collection("Like")
         .add({
-          Documento: id
+          Documento: id,
+          Usuario: context.usuario.Correo,
+          UserId: context.usuario.UserId
         }).then(() => {
           Alert.alert("Correcto", "Like")
         })

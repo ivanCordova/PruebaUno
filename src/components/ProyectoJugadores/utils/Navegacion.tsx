@@ -13,22 +13,21 @@ import EjemploUseReducer from '../screens/EjemploUseReducer';
 import AuthContext from './AuthContext';
 
 const Navegacion = () => {
-    const Stack = createStackNavigator();
-  
-    return (
-        <NavigationContainer>
-          <AuthContext>
-          <Stack.Navigator initialRouteName='Login'>
-                <Stack.Screen name='Principal' component={Principal} options={{headerStyle:{backgroundColor:"orange"}}}></Stack.Screen>
-                <Stack.Screen name='Agregar' component={Agregar}></Stack.Screen>
-                <Stack.Screen name='Actualizar' component={Actualizar}></Stack.Screen>
-                <Stack.Screen name='Foto' component={Foto}></Stack.Screen>
-                <Stack.Screen name='Login' component={Login}></Stack.Screen>
-                <Stack.Screen name='Registro' component={Registro}></Stack.Screen>
-                <Stack.Screen name='EjemploReducer' component={EjemploUseReducer}></Stack.Screen>
-            </Stack.Navigator>
-          </AuthContext>
-        </NavigationContainer>
+  const Stack = createStackNavigator();
+  return (
+    <NavigationContainer>
+      <AuthContext>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen name='Principal' component={Principal} options={{ headerStyle: { backgroundColor: "orange" } }}></Stack.Screen>
+          <Stack.Screen name='Agregar' component={Agregar}></Stack.Screen>
+          <Stack.Screen name='Actualizar' component={Actualizar}></Stack.Screen>
+          <Stack.Screen name='Foto' component={Foto}></Stack.Screen>
+          <Stack.Screen name='EjemploReducer' component={EjemploUseReducer}></Stack.Screen>
+          <Stack.Screen name='Login' component={Login}></Stack.Screen>
+          <Stack.Screen name='Registro' component={Registro}></Stack.Screen>
+        </Stack.Navigator>
+      </AuthContext>
+    </NavigationContainer>
   )
 }
 
