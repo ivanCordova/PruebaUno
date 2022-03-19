@@ -21,7 +21,7 @@ const ItemJugador = (Props: IJugador) => {
   
   }
 
-  function GetLikes() {
+  /* function GetLikes() {
     const subscriber = firestore()
       .collection('Jugadores')
       .doc(Props.Id)
@@ -35,6 +35,19 @@ const ItemJugador = (Props: IJugador) => {
         setLike(data);
       });
     return subscriber;
+  } */
+
+  function GetLikes(){
+    const suscriber = firestore().collection("Jugadores").doc(Props.Id)
+    .collection("Like")
+    .onSnapshot(snapshot => {
+      snapshot && snapshot.forEach(doc => {
+        const likes = doc.data() as ILikes;
+        likes.Id = doc.id
+        setLike(like => [...like,likes])
+      })
+    })
+    return () => suscriber()
   }
 
   function Newlike(){

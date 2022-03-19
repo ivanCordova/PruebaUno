@@ -9,7 +9,7 @@ import { IUsuario } from '../models/IJugador';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { contexto } from '../utils/AuthContext';
+import { contexto } from '../utils/AuthContext'
 
 
 const Login = ({ navigation }: Props) => {
@@ -44,6 +44,8 @@ const Login = ({ navigation }: Props) => {
                 console.error(error);
             });
     }
+
+
 
     const login = (usr: IUsuario) => {
         auth().signInWithEmailAndPassword(usr.Usuario, usr.Contrasenia)
