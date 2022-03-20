@@ -13,17 +13,47 @@ const ItemJugador = (Props: IJugador) => {
 
   const [like, setLike] = useState<ILikes[]>([])
   const context = useContext(contexto)
+  let [heart, setHeart] = useState("heart-o")
   
+  const isLiked = (id: string) =>{
+    GetLikes()
+    const p = like.find((l)=> l.UserId === id)?true:false
+    return p
+  }
 
-  const newLike = ()=>{
-    (like.find((l) => l.UserId === context.usuario.UserId))
+
+  function GetLikes(){
+    const suscriber = firestore().collection("Jugadores").doc(Props.Id)
+    .collection("Like")
+    .onSnapshot(snapshot => {
+      snapshot && snapshot.forEach(doc => {
+        const likes = doc.data() as ILikes;
+        likes.Id = doc.id
+        setLike(like => [...like,likes])
+      })
+    })
+
+    if (isLiked(context.usuario.UserId)) {
+      setHeart("heart")
+    } else {
+      setHeart("heart-o")
+    }
+
+    return () => suscriber()
+  }
+
+  function Newlike(){
+    {(isLiked(context.usuario.UserId))
     ?
     firestore()
     .collection("Jugadores")
     .doc(Props.Id)
     .collection("Like")
-    .doc(like.find((l) => l.UserId === context.usuario.UserId)?.Id)
-    .delete()
+    .doc(like.find((l)=> l.UserId === context.usuario.UserId)?.Id)
+    .delete().then(() =>{ 
+      console.log("Like eliminado")
+      setHeart("heart-o")
+    })
     :
     firestore()
     .collection("Jugadores")
@@ -35,26 +65,9 @@ const ItemJugador = (Props: IJugador) => {
       UserId: context.usuario.UserId
     }).then(() => {
       console.log("like agregado")
-    })
-  }
-
-
-    function GetLikes() {
-    const subscriber = firestore()
-      .collection('Jugadores').doc(Props.Id)
-      .collection("Like")
-      .onSnapshot(snapshot => {
-        const data = snapshot.docs.map(doc => {
-          const likes = doc.data() as ILikes;
-          likes.Id = doc.id;
-          return likes;
-        });
-        setLike(data)
-      });
-    return subscriber;
-  }
-
-
+      setHeart("heart")
+    })}
+}
 
   useEffect(() => {
     GetLikes()
@@ -68,8 +81,8 @@ const ItemJugador = (Props: IJugador) => {
         <TouchableOpacity style={styles.personasLikes}>
           <Text style={styles.textoLikes}>juan ...</Text>
         </TouchableOpacity>
-        <Pressable style={styles.likes} onPress={newLike}>
-          <Icon name={like.find((l) => l.UserId === context.usuario.UserId)?"heart":"heart-o"} size={30} color={'white'}></Icon>
+        <Pressable style={styles.likes} onPress={() => Newlike()}>
+          <Icon name={heart} size={30} color={'white'}></Icon>
         </Pressable>
       </View>
       <View style={styles.contenImagen}>

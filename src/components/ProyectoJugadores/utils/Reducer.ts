@@ -18,7 +18,11 @@ export function reducerOperaciones(state: IUsuario, action: Actions): IUsuario{
                 Correo: payload.Correo
             }
             break;
-            
+        case OperacionesEnum.Cerrar:
+            return{
+               UserId: payload.UserId,
+               Correo: payload.Correo 
+            }            
         default:
             return state;
     }

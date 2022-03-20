@@ -11,7 +11,7 @@ const UsuarioInicial: IUsuario = {
 interface ContextProps {
     usuario: IUsuario,
     IniciarSesion: (user: IUsuario) => void
-    CerrarSesion?: () => void
+    CerrarSesion?: (user: IUsuario) => void
 }
 
 export const contexto = createContext<ContextProps>({} as ContextProps)
@@ -28,10 +28,15 @@ const AuthContext = ({ children }: Props) => {
         dispatch({type: OperacionesEnum.Iniciar, payload: user})
     }
 
+    const CerrarSesion = (user: IUsuario)=>{
+        dispatch({type: OperacionesEnum.Cerrar, payload: user})
+    }
+
     return (
         <contexto.Provider value={{
             usuario:state,
-            IniciarSesion
+            IniciarSesion,
+            CerrarSesion
         }}>
             {children}
         </contexto.Provider>

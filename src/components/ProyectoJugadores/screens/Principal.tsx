@@ -21,19 +21,7 @@ const Principal = ({ navigation }: Props) => {
   const [open, setOpen] = React.useState(false);
 
 
-  function GetJugadores(){
-    const suscriber = firestore().collection("Jugadores")
-    .onSnapshot(snapshot => {
-      snapshot && snapshot.forEach(doc => {
-        const jugador = doc.data() as IJugador
-        jugador.Id = doc.id
-        setJugadores(Jugadores => [...Jugadores,jugador])
-      })
-    })
-    return () => suscriber()
-  }
-
-/*   function GetJugadores() {
+  function GetJugadores() {
     const subscriber = firestore()
       .collection('Jugadores')
       .onSnapshot(snapshot => {
@@ -43,11 +31,9 @@ const Principal = ({ navigation }: Props) => {
           return jugador;
         });
         setJugadores(data);
-      }, onError => {
-        navigation.navigate("Login")
       });
     return subscriber;
-  } */
+  }
 
   useEffect(() => {
     GetJugadores();
@@ -82,6 +68,7 @@ const Principal = ({ navigation }: Props) => {
           onPress={() => {
             auth().signOut().then(() => {
               navigation.goBack()
+              context.CerrarSesion!({Correo: "", UserId: ""})
             })
 
           }}
