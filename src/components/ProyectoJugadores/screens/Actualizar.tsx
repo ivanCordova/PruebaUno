@@ -137,9 +137,6 @@ const Actualizar = ({ navigation, route }: Props) => {
                     <Pressable style={[styles.boton, { backgroundColor: "green" }]} onPress={eliminar}>
                         <Text style={styles.textoBoton}>Eliminar</Text>
                     </Pressable>
-                    <Pressable onPress={like}>
-                        <Icon style={{marginHorizontal: 10}} name="heart" size={50} color="orange" />
-                    </Pressable>
                 </View>
             }
         </View>

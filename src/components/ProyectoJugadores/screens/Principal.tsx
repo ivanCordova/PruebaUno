@@ -19,7 +19,7 @@ const Principal = ({ navigation }: Props) => {
   const [Jugadores, setJugadores] = useState<IJugador[]>([]);
   const context = useContext(contexto)
   const [open, setOpen] = React.useState(false);
-
+  
 
   function GetJugadores() {
     const subscriber = firestore()
