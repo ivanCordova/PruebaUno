@@ -40,6 +40,7 @@ const ItemJugador = (Props: IJugador) => {
 
 
     function GetLikes() {
+      console.log(Props.Id);
     const subscriber = firestore()
       .collection('Jugadores').doc(Props.Id)
       .collection("Like")
@@ -50,7 +51,9 @@ const ItemJugador = (Props: IJugador) => {
           return likes;
         });
         setLike(data)
+      },(err) => {
       });
+      console.log("ItemJugador:"+like)
     return subscriber;
   }
 
@@ -65,7 +68,7 @@ const ItemJugador = (Props: IJugador) => {
   return (
     <View style={styles.contenedor}>
       <View style={styles.contenedorLikes}>
-        <TouchableOpacity style={styles.personasLikes}>
+        <TouchableOpacity style={styles.personasLikes} onPress={Props.personasLikes}>
           <Text style={styles.textoLikes}>juan ...</Text>
         </TouchableOpacity>
         <Pressable style={styles.likes} onPress={newLike}>

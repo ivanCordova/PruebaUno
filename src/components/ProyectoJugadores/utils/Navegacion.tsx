@@ -11,6 +11,7 @@ import auth from '@react-native-firebase/auth';
 import Registro from '../screens/Registro';
 import EjemploUseReducer from '../screens/EjemploUseReducer';
 import AuthContext from './AuthContext';
+import PersonasLikes from '../screens/PersonasLikes';
 
 const Navegacion = () => {
   const Stack = createStackNavigator();
@@ -25,6 +26,7 @@ const Navegacion = () => {
           <Stack.Screen name='EjemploReducer' component={EjemploUseReducer}></Stack.Screen>
           <Stack.Screen name='Login' component={Login}></Stack.Screen>
           <Stack.Screen name='Registro' component={Registro}></Stack.Screen>
+          <Stack.Screen name='PersonasLikes' component={PersonasLikes}></Stack.Screen>
         </Stack.Navigator>
       </AuthContext>
     </NavigationContainer>

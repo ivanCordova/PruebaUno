@@ -11,6 +11,7 @@ import Navegacion from '../utils/Navegacion';
 import { SpeedDial } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import { contexto } from '../utils/AuthContext';
+import { ILikes } from '../models/ILikes';
 
 
 type Props = StackScreenProps<RootStackParamasList>;
@@ -19,7 +20,7 @@ const Principal = ({ navigation }: Props) => {
   const [Jugadores, setJugadores] = useState<IJugador[]>([]);
   const context = useContext(contexto)
   const [open, setOpen] = React.useState(false);
-  
+
 
   function GetJugadores() {
     const subscriber = firestore()
@@ -31,6 +32,7 @@ const Principal = ({ navigation }: Props) => {
           return jugador;
         });
         setJugadores(data);
+      }, (err) => {
       });
     return subscriber;
   }
@@ -39,12 +41,16 @@ const Principal = ({ navigation }: Props) => {
     GetJugadores();
   }, []);
 
+
   return (
     <View style={styles.container}>
       <FlatList data={Jugadores} renderItem={(e) =>
-        
-          <ItemJugador {...e.item} mostrar={() => navigation.navigate("Actualizar", { id: e.item.Id })}></ItemJugador>
-        
+
+        <ItemJugador {...e.item}
+          mostrar={() => navigation.navigate("Actualizar", { id: e.item.Id })}
+          personasLikes={() => navigation.navigate("PersonasLikes", { id: e.item.Id })}
+        ></ItemJugador>
+
       }></FlatList>
 
       <SpeedDial
@@ -63,14 +69,12 @@ const Principal = ({ navigation }: Props) => {
         />
         <SpeedDial.Action
           icon={{ name: 'logout', color: '#fff' }}
-          title="Delete"
+          title="Logout"
           buttonStyle={{ backgroundColor: "red" }}
           onPress={() => {
             auth().signOut().then(() => {
               navigation.goBack()
-              context.CerrarSesion!({Correo: "", UserId: ""})
             })
-
           }}
         />
       </SpeedDial>
