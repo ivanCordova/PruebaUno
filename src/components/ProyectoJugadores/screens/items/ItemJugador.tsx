@@ -34,13 +34,11 @@ const ItemJugador = (Props: IJugador) => {
       Usuario: context.usuario.Correo,
       UserId: context.usuario.UserId
     }).then(() => {
-      console.log("like agregado")
     })
   }
 
 
     function GetLikes() {
-      console.log(Props.Id);
     const subscriber = firestore()
       .collection('Jugadores').doc(Props.Id)
       .collection("Like")
@@ -53,7 +51,6 @@ const ItemJugador = (Props: IJugador) => {
         setLike(data)
       },(err) => {
       });
-      console.log("ItemJugador:"+like)
     return subscriber;
   }
 

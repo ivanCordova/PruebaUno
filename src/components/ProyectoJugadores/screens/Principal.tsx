@@ -18,6 +18,7 @@ type Props = StackScreenProps<RootStackParamasList>;
 
 const Principal = ({ navigation }: Props) => {
   const [Jugadores, setJugadores] = useState<IJugador[]>([]);
+  const [like, setLike] = useState<ILikes[]>([])
   const context = useContext(contexto)
   const [open, setOpen] = React.useState(false);
 
@@ -45,7 +46,6 @@ const Principal = ({ navigation }: Props) => {
   return (
     <View style={styles.container}>
       <FlatList data={Jugadores} renderItem={(e) =>
-
         <ItemJugador {...e.item}
           mostrar={() => navigation.navigate("Actualizar", { id: e.item.Id })}
           personasLikes={() => navigation.navigate("PersonasLikes", { id: e.item.Id })}

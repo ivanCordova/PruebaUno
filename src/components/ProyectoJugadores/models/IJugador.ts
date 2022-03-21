@@ -6,8 +6,7 @@ export interface IJugador {
   Nombre: string;
   Pais: string;
   Edad: number;
-  Imagen: string,
-  Likes: ILikes[],
+  Imagen: string;
   mostrar?: () => void;
   personasLikes?: () => void;
 }

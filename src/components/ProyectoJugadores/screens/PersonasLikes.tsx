@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ILikes } from '../models/ILikes'
 import firestore from '@react-native-firebase/firestore';
@@ -14,8 +14,9 @@ const PersonasLikes = ({ navigation, route }: Props) => {
   const [like, setLike] = useState<ILikes[]>([])
 
 
+
+
   function GetLikes() {
-    console.log("Personas:"+id)
     const subscriber = firestore()
       .collection('Jugadores').doc(id)
       .collection("Like")
@@ -26,26 +27,40 @@ const PersonasLikes = ({ navigation, route }: Props) => {
           return likes;
         });
         setLike(data)
-      },(err) => {
-        console.log(err);
+      }, (err) => {
       });
     return subscriber;
   }
-  
-  
-  
+
+
+
   useEffect(() => {
     GetLikes()
-    console.log(like)
   },[])
 
   return (
     <View>
-      
+      <Pressable onPress={() => {
+        console.log(like)
+      }} style={styles.botonEditar} >
+        <Text>Editar</Text>
+      </Pressable>
     </View>
   )
 }
 
 export default PersonasLikes
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  botonEditar: {
+    backgroundColor: "green",
+    width: 100,
+    height: 30,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 10,
+    flexDirection: "row"
+  }
+})
