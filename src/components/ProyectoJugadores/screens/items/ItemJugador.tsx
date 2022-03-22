@@ -66,7 +66,8 @@ const ItemJugador = (Props: IJugador) => {
     <View style={styles.contenedor}>
       <View style={styles.contenedorLikes}>
         <TouchableOpacity style={styles.personasLikes} onPress={Props.personasLikes}>
-          <Text style={styles.textoLikes}>juan ...</Text>
+          <Text style={styles.textoLikes}>Likes</Text>
+           <Icon style={{marginLeft: 5, alignSelf: "center"}} name="chevron-right" size={30} color={'white'}></Icon>
         </TouchableOpacity>
         <Pressable style={styles.likes} onPress={newLike}>
           <Icon name={like.find((l) => l.UserId === context.usuario.UserId)?"heart":"heart-o"} size={30} color={'white'}></Icon>
@@ -141,11 +142,13 @@ const styles = StyleSheet.create({
   },
   personasLikes: {
     flex: 8,
+    flexDirection: "row"
   },
   likes: {
     flex: 1,
   },
   textoLikes:{
-    fontSize: 20
+    fontSize: 25,
+    alignSelf: "center"
   }
 })

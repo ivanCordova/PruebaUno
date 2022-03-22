@@ -7,8 +7,12 @@ import * as Yup from 'yup'
 import { Formik } from 'formik';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import storage from '@react-native-firebase/storage'
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamasList } from '../utils/RootStackParam';
+type Props = StackScreenProps<RootStackParamasList, "Agregar">;
 
-const Agregar = () => {
+
+const Agregar = ({ navigation }: Props) => {
 
   async function SeleccionarImagenGaleria() {
     let opciones: ImageLibraryOptions = {
@@ -55,6 +59,7 @@ const Agregar = () => {
           Imagen: link
         }).then(() => {
           Alert.alert("Correcto", "Jugador agregado correctamente")
+          navigation.goBack()
         })
     })
 

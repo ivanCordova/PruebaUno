@@ -1,5 +1,5 @@
 import { Alert, Button, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Principal from '../screens/Principal';
@@ -12,8 +12,11 @@ import Registro from '../screens/Registro';
 import EjemploUseReducer from '../screens/EjemploUseReducer';
 import AuthContext from './AuthContext';
 import PersonasLikes from '../screens/PersonasLikes';
+import { contexto } from '../utils/AuthContext';
+
 
 const Navegacion = () => {
+  const context = useContext(contexto)
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
